@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-container {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn-piedra { background-color: #ffcc00; }
+        .btn-papel { background-color: #33ccff; }
+        .btn-tijera { background-color: #ff6666; }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Piedra, Papel o Tijera</h1>
+    <div class="game-container">
+        <p>Elige una opción:</p>
+        <button class="btn btn-piedra" onclick="jugar(1)">🪨 Piedra</button>
+        <button class="btn btn-papel" onclick="jugar(2)">🧻 Papel</button>
+        <button class="btn btn-tijera" onclick="jugar(3)">✂️ Tijera</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        let triunfos = 0;
+        let perdidas = 0;
+
+        function aleatorio(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        function eleccion(jugada) {
+            let opciones = ["", "Piedra 🪨", "Papel 🧻", "Tijera ✂️"];
+            return opciones[jugada] || "Elección inválida";
+        }
+
+        function jugar(jugador) {
+            let pc = aleatorio(1, 3);
+            let mensaje = `<p>PC elige: ${eleccion(pc)}</p><p>Tú eliges: ${eleccion(jugador)}</p>`;
+
+            if (pc === jugador) {
+                mensaje += "<p>🔥 EMPATE 🔥</p>";
+            } else if ((jugador == 1 && pc == 3) || (jugador == 2 && pc == 1) || (jugador == 3 && pc == 2)) {
+                triunfos++;
+                mensaje += "<p>🎉 ¡GANASTE! 🎉</p>";
+            } else {
+                perdidas++;
+                mensaje += "<p>❌ PERDISTE ❌</p>";
+            }
+
+            mensaje += `<p>🏆 Victorias: ${triunfos} | ❌ Derrotas: ${perdidas}</p>`;
+
+            if (triunfos === 3) {
+                mensaje += "<p>🎊 ¡Felicidades, ganaste la partida! 🎊</p>";
+                reiniciarJuego();
+            } else if (perdidas === 3) {
+                mensaje += "<p>💀 Perdiste la partida. Inténtalo de nuevo. 💀</p>";
+                reiniciarJuego();
+            }
+
+            document.getElementById("resultado").innerHTML = mensaje;
+        }
+
+        function reiniciarJuego() {
+            triunfos = 0;
+            perdidas = 0;
+        }
+    </script>
+</body>
+</html>
